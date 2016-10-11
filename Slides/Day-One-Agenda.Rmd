@@ -1,61 +1,85 @@
 ---
-title: "Day Two Agenda"
+title: "Day One Agenda"
 author: "Ali Zaidi"
 date: "October 10th, 2016"
 output:
   revealjs::revealjs_presentation:
-    reveal_options:
-      previewLinks: yes
-      slideNumber: yes
-      css: ../slides.css
+    center: yes
+    css: ../slides.css
+    incremental: yes
+    previewLinks: yes
     reveal_plugins:
     - zoom
     - notes
     self_contained: no
+    slideNumber: yes
     theme: night
-    transition: default
+    viewDistance: 3
 ---
 
 # Welcome!
 
-## Day Two Agenda
+## R U Ready?
 
-### Topics
+* The goal of this course is to show you how to have fun with R
+* Course Webpage: [github.com/akzaidi/R-cadence](https://github.com/akzaidi/R-cadence)
 
-* Microsoft R Server Overview Presentation: _9:30 - 10:30_
-* Hands-On Lab, Developing R Functions, Functional Programming: _10:45 - 12:00_
-* The `dplyrXdf` Package: Using `dplyr` Syntax with `xdf`s: _12:45 - 1:45_
-* Modeling and Scoring with Microsoft R Server, with Hands on Lab: _2:00 - 3:15_
-* `RML`: The Microsoft Machine Learning Package for R, _3:30 - 4:45_
+## About Myself
 
-##  Morning Session
+![](http://www.tridant.com.sg/wp-content/uploads/2015/03/rev_13287_logo_clarkhead_rgb_final_av-450px.png)
 
-### Learning Objectives
 
-* Microsoft R Server Overview Presentation: _9:30 - 10:30_
-    - Learn how MRS breaks the memory barrier of R
-    - Know what are the core components of MRS
-    - Understand how PEMA works
-* Hands-On Lab, Developing R Functions, Functional Programming: _10:45 - 12:00_
-    - Understand why functions are useful
-    - What it takes to make a good function
-    - Why functionals are cool
-    
-# Lunch!!
+## Background
 
-## Afternoon Session
++ Studied statistics and machine learning at the University of Toronto
++ Joined Microsoft through the Revolution Analytics acquistion last year
++ Have used R for about 7 years now
++ Hadoop for 2.5 years
++ Spark for 1.5 years
 
-### Learning Objectives
 
-* The `dplyrXdf` Package: Using `dplyr` Syntax with `xdf`s: _12:45 - 1:45_
-    - How you can use your `dplyr` expertise to manipulate `xdf` files
-    - When _not_ to use `dplyrXdf`
-* Modeling and Scoring with Microsoft R Server, with Hands on Lab: _2:00 - 3:15_
-    - Be able to estiimate models with MRS
-    - Create functional pipelines for modeling, evaluation, and scoring
-* `RML`: The Microsoft Machine Learning Package for R, _3:30 - 4:45_
-    - Learn about the cutting-edge machine learning algorithms coming to MRS
-    - Create a natural language processing model with `RML`
-    
-# Go home and write R!
+## Git Up Off That Thang
+
+![](http://img.deusm.com/informationweek/2014/10/1316800/Microsoft_LOVES_Linux.jpg)
+
+## Git 
+
++ Git is awesome
++ For the thorough-breds: [Jenny Bryan's Git book](http://happygitwithr.com/)
++ For the concise-minded: [Concise Git Tutorial](https://github.com/shekhargulati/git-the-missing-tutorial)
+
+## What You Should Do
+
++ Create a GitHub account: [github.com/join](https://github.com/join)
++ Download [GitKraken](https://www.gitkraken.com/) locally
++ Fork the course repository to your own account
++ Set upstream: https://github.com/akzaidi/R-cadence.git
+    - git remote add upstream https://github.com/akzaidi/R-cadence.git
+
+
+# Day One's Plan
+
+## Day One Modules
+
++ The Microsoft R Data Stack
++ The Core Principles of R
++ Functional Programming in R
++ Deep-dive into the `dplyr` package for data manipulation
+
+# Microsoft R Data Stack
+
+## Microsoft R Family
+
+<div style="width:800px">
+![](https://raw.githubusercontent.com/akzaidi/R-cadence/master/images/mr-family.png)
+</div>
+
+
+## R Server 
+
++ [Data Scientist's Perspective on Microsoft R](http://blog.revolutionanalytics.com/2016/04/data-scientist-perspective.html)
+
+<div style="width:700px">
+![](https://raw.githubusercontent.com/akzaidi/R-cadence/master/images/mrcomponents.png)
+</div>
 

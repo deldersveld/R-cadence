@@ -88,15 +88,18 @@ DeployR: web service development kit through APIs, java, js, .net
 ### Create a local directory to save XDF
 
 ```{r}
-dir.create("data/")
-download.file("http://alizaidi.blob.core.windows.net/training/yellow_tripdata_2015.xdf", destfile = "data/yellow_tripdata_2015.xdf")
+your_name
+your_dir <- paste0('/datadrive/', your_name)
+dir.create(your_dir)
+download.file("http://alizaidi.blob.core.windows.net/training/yellow_tripdata_2015.xdf", 
+              destfile = file.path(your_dir, 'yellow_tripdata_2015.xdf'))
 ```
 
 ## Create a Pointer to XDF
 
 ```{r}
 library(dplyrXdf)
-taxi_xdf <- RxXdfData("data/yellow_tripdata_2015.xdf")
+taxi_xdf <- RxXdfData(file.path(your_dir, 'yellow_tripdata_2015.xdf'))
 taxi_xdf %>% head
 ```
 

@@ -23,7 +23,7 @@ There are three major components of a function:
 
 1. The arguments of a function
 2. The body of a function
-3. It's return value/side effects *(generally, this third principle should actually be the environment)*
+3. It's return value/side effects *(actually, the third component is actually the environment)*
 
 ```{r, eval = FALSE}
 

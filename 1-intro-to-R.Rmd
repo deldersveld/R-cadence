@@ -51,12 +51,6 @@ options(jupyter.rich_display = FALSE)
 * How to manage data with the exceptionally popular open source package `dplyr`
 * How to develop models and write functions in R
 
-<aside class="notes">
-Why not base R, why `dplyr`?
-Open floor to questions about what is known about R.
-Ask main obstacles
-</aside>
-
 ## Day Two 
 
 ### Scalable Data Analysis with Microsoft R
@@ -65,11 +59,7 @@ Ask main obstacles
 * WODA - Write Once, Deploy Anywhere
 * High Performance Analytics
 * High Performance Computing
-
-<aside class="notes">
-Who's moving?
-What's the diff(HPC, HPA)
-</aside>
+* Machine Learning with Microsoft R
 
 ## Day Three
 
@@ -81,11 +71,6 @@ What's the diff(HPC, HPA)
 * Spark DataFrames, `SparkR`, and the `sparklyr` package
 * Developing Machine Learning Pipelines with `Spark` and Microsoft R
 
-<aside class="notes">
-Explain the recent developments
-Maturity.
-</aside>
-
 ## Prerequisites
 ### Computing Environments
 
@@ -93,14 +78,9 @@ Maturity.
 * Azure Credits
 * Can use the [Linux DSVM](https://azure.microsoft.com/en-us/documentation/articles/machine-learning-data-science-linux-dsvm-intro/)
 * Or the [Windows DSVM](https://azure.microsoft.com/en-us/documentation/articles/machine-learning-data-science-provision-vm/)
-* For IDE: use RStudio Server, JupyterHub, JupyterLab... 
+* For IDE: use [RTVS](https://www.visualstudio.com/vs/rtvs/), [RStudio Server](https://www.rstudio.com/products/rstudio/download3/), [JupyterHub](https://jupyterhub.readthedocs.io/en/latest/), [JupyterLab](http://jupyterlab-tutorial.readthedocs.io/en/latest/)... 
     + Whatever you're comfortable with!
   
-<aside class="notes">
-Take a break, and ask the students if they need any assistance with setting up their machine.
-Demo of the IDEs come next.
-</aside>
-
 ## Development Environments 
 ### Where to Write R Code
 
@@ -109,8 +89,8 @@ Demo of the IDEs come next.
 * RStudio Server for cloud instances
 * Developers of RStudio have also written a plethora of useful R packages
 * For Windows machines, we have recently announced the general availability of [R Tools for Visual Studio, RTVS](https://www.visualstudio.com/en-us/features/rtvs-vs.aspx)
-* RTVS will support connectivity to Azure and SQL Server in the future
-* VS has great debugging support, remote connectivity, so expect some exciting features!
+* RTVS supports connectivity to Azure and SQL Server in the future
+* VS has great debugging support, remote connectivity, and integration with Azure/SQL, so it's a great choice if you want access to the whole stack
 
 
 ## What is R? 
@@ -127,11 +107,19 @@ Demo of the IDEs come next.
 
 R follows the [Unix philosophy](http://en.wikipedia.org/wiki/Unix_philosophy)
 
-* Write programs that do one thing and do it well
-* Write programs to work together
+* Write programs that do one thing and do it well (modularity)
+* Write programs that work together (cohesiveness)
 * R is extensible with more than 10,000 packages available at CRAN (http://crantastic.org/packages)
-* R, like it's inspiration, Scheme, is a functional programming language
-* R evaluates lazily, allowing for a very flexible syntax
+
+
+## The aRt of Being Lazy
+### Lazy Evaluation in R
+
+![](http://i.imgur.com/5GbW690.gif)
+
+
+* R, like it's inspiration, Scheme, is a _functional_ programming language
+* R evaluates lazily, delaying evaluation until necessary, which can make it very flexible
 * R is a highly interpreted dynamically typed language, allowing you to mutate variables and analyze datasets quickly, but is significantly slower than low-level, statically typed languages like C or Java
 * R has a high memory footprint, and can easily lead to crashes if you aren't careful
 
@@ -181,14 +169,14 @@ R follows the [Unix philosophy](http://en.wikipedia.org/wiki/Unix_philosophy)
 
 Symbol | Meaning
 ------ | -------
+ `<-`   | assignment operator
   `>`   | ready for a new command
   `+`   | awaiting the completion of an existing command 
+  `?`   | get help for following function
   
-Can change these options either permanently at startup (see `?Startup`) or manually at each session with the `options` function, `options(repos = " ")` for example.
+Can change options either permanently at startup (see `?Startup`) or manually at each session with the `options` function, `options(repos = " ")` for example.
 
-Check your CRAN mirror with `getOption("repos")`
-
-
+Check your CRAN mirror with `getOption("repos")`.
 
 ## I'm Lost! 
 ### Getting Help for R
@@ -207,6 +195,10 @@ Check your CRAN mirror with `getOption("repos")`
 ## Quick Tour of Things You Need to Know
 ### Data Structures
 
+> "Bad programmers worry about the code. 
+> Good programmers worry about data structures and their relationships."
+> - Linus Torvalds
+
 * R's data structures can be described by their dimensionality, and their type.
 
 
@@ -217,6 +209,7 @@ Check your CRAN mirror with `getOption("repos")`
 | nd | Array         |               |
 
 ## Quick Tour of Things You Need to Know 
+
 ### Data Types
 
 * Atomic vectors come in one of four types
@@ -227,6 +220,27 @@ Check your CRAN mirror with `getOption("repos")`
 * Rare types:
 * `complex` 
 * `raw`
+
+## Manipulating Data Structures
+
+### Subsetting Operators
+
+* To create a vector, use `c`: `c(1, 4, 1, 3)`
+* To create a list, use `list`: `list(1, 'hi', data.frame(1:10, letters[1:10]))`
+* To subset a vector or list, use the `[ ]`
+  - inside the brackets: 
+    + positive integer vectors for indices you want 
+    + negative integer vectors for indices you want to drop
+    + logical vectors for indices you want to keep/drop (TRUE/FALSE)
+    + character vectors for named vectors corresponding to which named elements you want to keep
+    + subsetting a list with a single square bracket always returns a list
++ To subset a list and get back just that element, use `[[ ]]`
+
+### Object Representation
+
++ To find the type of an object, use `class` (_higher level representation_)
++ To find how the object is stored in memory, use `typeof` (_lower level representation_)
++ Good time to do Lab 0!
 
 # Data Manipulation with the dplyr Package
 
@@ -352,6 +366,7 @@ Your turn:
 
 ```{r}
 library(stringr)
+table(taxi_df$pickup_nhood)
 harlem_pickups <- filter(taxi_df, str_detect(pickup_nhood, "Harlem"))
 harlem_pickups
 ```
@@ -512,14 +527,15 @@ taxi_df %>%
 ---
 
 ```{r}
-manhattan_hoods <- readRDS(gzcon(url("http://alizaidi.blob.core.windows.net/training/manhattan.rds")))
+mht_url <- "http://alizaidi.blob.core.windows.net/training/manhattan.rds"
+manhattan_hoods <- readRDS(gzcon(url(mht_url)))
 taxi_df %>% 
   filter(pickup_nhood %in% manhattan_hoods,
          dropoff_nhood %in% manhattan_hoods) %>% 
   group_by(dropoff_nhood, pickup_nhood) %>% 
   summarize(ave_tip = mean(tip_pct), 
             ave_dist = mean(trip_distance)) %>% 
-  filter(ave_dist > 3, ave_tip > 0.05) %>% print
+  filter(ave_dist > 3, ave_tip > 0.05)
 ```
 
 ## Pipe and Plot
@@ -616,7 +632,7 @@ Your turn:
 ```{r}
 taxi_hood_sum <- function(taxi_data = taxi_df) {
   
-  mht_url <- "http://alizaidi.blob.core.windows.net/training/manhattan.rdschunk "
+  mht_url <- "http://alizaidi.blob.core.windows.net/training/manhattan.rds"
   
   manhattan_hoods <- readRDS(gzcon(url(mht_url)))
   taxi_data %>% 
@@ -706,7 +722,9 @@ Where are our results?
 * You can still modify each element as you would normally, or pass it to a `mutate` function to extract intercept or statistics
 * But there's also a very handy `broom` package for cleaning up such objects into `data.frames`
 
----
+## Brooming Up the Mess
+
+### Model Metrics
 ```{r}
 library(broom)
 taxi_df %>% sample_n(10^5) %>%  
@@ -715,6 +733,18 @@ taxi_df %>% sample_n(10^5) %>%
      data = .)))
 
 ```
+
+### Model Coefficients
+
+The most commonly used function in the `broom` package is the `tidy` function. This will expand our data.frame and give us the model coefficients
+
+```{r}
+taxi_df %>% sample_n(10^5) %>%  
+  group_by(dropoff_dow) %>% 
+  do(tidy(lm(tip_pct ~ pickup_nhood + passenger_count + pickup_hour,
+     data = .)))
+```
+
 
 ## Summary
 
