@@ -88,18 +88,22 @@ DeployR: web service development kit through APIs, java, js, .net
 ### Create a local directory to save XDF
 
 ```{r}
-your_name
+# Replace string with a unique name
+your_name <- 'your_name'
+# Your custom File Path
 your_dir <- paste0('/datadrive/', your_name)
+# File Path to your Data
+your_data <- file.path(your_dir, 'tripdata_2015.xdf')
 dir.create(your_dir)
 download.file("http://alizaidi.blob.core.windows.net/training/yellow_tripdata_2015.xdf", 
-              destfile = file.path(your_dir, 'yellow_tripdata_2015.xdf'))
+              destfile = your_data)
 ```
 
 ## Create a Pointer to XDF
 
 ```{r}
 library(dplyrXdf)
-taxi_xdf <- RxXdfData(file.path(your_dir, 'yellow_tripdata_2015.xdf'))
+taxi_xdf <- RxXdfData(your_data)
 taxi_xdf %>% head
 ```
 
@@ -121,7 +125,7 @@ taxi_xdf %>% rxGetInfo(getVarInfo = TRUE)
 
 ---
 ```{r}
-taxi_transform <- RxXdfData("data/taxi_transform.xdf")
+taxi_transform <- RxXdfData(your_data)
 ```
 
 ---
@@ -163,7 +167,7 @@ taxi_transform@file
 ```
 
 ```{r}
-persist(taxi_transform, outFile = "data/taxiTransform.xdf") -> taxi_transform
+persist(taxi_transform, outFile = "taxiTransform.xdf") -> taxi_transform
 ```
 
 ## Using dplyrXdf for Aggregations 

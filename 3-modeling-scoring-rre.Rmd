@@ -1,7 +1,7 @@
 ---
-title: "Modeling and Scoring with Revolution R Enterprise"
+title: "Modeling and Scoring with RevoScaleR"
 author: "Ali Zaidi"
-date: "September 21, 2016"
+date: "October 11, 2016"
 output:
   ioslides_presentation:
     logo: images/clark-logo.png
@@ -125,6 +125,36 @@ create_partition <- function(xdf = mort_xdf,
 
 ```
 
+## Minimizing IO
+### Transforms in rxSplit
+
+While the above example does what we want it to do, it's not very efficient. It requires two passes over the data, first to add the `trainvalidate` column, and then another to split it into train and validate sets. We could do all of that in a single step if we pass the transforms directly to `rxSplit`.
+
+```{r split_transforms}
+
+create_partition <- function(xdf = mort_xdf,
+                             partition_size = 0.75, ...) {
+
+  splitDS <- rxSplit(inData = xdf, 
+                     transforms = list(
+                       trainvalidate = factor(
+                         ifelse(rbinom(.rxNumRows,
+                                       size = 1, prob = splitperc),
+                                "train", "validate")
+                         )
+                       ),
+                     transformObjects = list(splitperc = partition_size),
+                     outFileSuffixes = c("train", "validate"),
+                     splitByFactor = "trainvalidate",
+                     overwrite = TRUE)
+  
+  return(splitDS) 
+  
+}
+
+```
+
+
 ## Generating Training and Test Sets
 ### List of xdfs
 
@@ -227,6 +257,7 @@ plot(createTreeView(default_model_tree))
 ### rxPredict for Logistic Regression
 
 ```{r remove_any_older_xdf, echo = FALSE, message = F}
+options(stringsAsFactors = TRUE)
 if(file.exists("scored.xdf")) file.remove('scored.xdf')
 ```
 
@@ -249,7 +280,6 @@ rxGetInfo(default_logit_scored, numRows = 2)
 
 ```{r roc_curve}
 rxRoc(actualVarName = "default", predVarNames ="pred_logit_default", data = default_logit_scored)
-
 ```
 
 
@@ -272,6 +302,7 @@ default_tree_scored <- rxPredict(default_model_tree,
 ## Visualize Multiple ROCs
 
 ```{r roc_multiple}
+
 rxRocCurve("default",
            c("pred_logit_default", "pred_tree_default"),
            data = default_tree_scored)
